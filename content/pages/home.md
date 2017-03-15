@@ -49,7 +49,7 @@ First, make sure you have an account
 with [Amazon Web Services](https://aws.amazon.com/). Then download and
 install pywren via PIP
 as
-[outlined in the getting started materials](http://localhost:8000/pages/gettingstarted.html) Then
+[outlined in the getting started materials]({filename}gettingstarted.md) Then
 enjoy running your code on thousands of cores simultaneously!
 
 ## Technology 
