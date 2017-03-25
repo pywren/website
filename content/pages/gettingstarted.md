@@ -113,4 +113,5 @@ pywren log_url
 
 ## Permissions and IAM 
 
-PyWren needs 
+PyWren needs various permissions for the automatic setup script to work. 
+Please see an example of an AWS policy with the necessary permissions [in the PyWren source](https://github.com/pywren/pywren/blob/master/tests/default_pywren_user_permissions.json ) 
