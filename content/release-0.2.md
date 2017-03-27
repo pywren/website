@@ -1,11 +1,10 @@
 Title: PyWren 0.2
-Date: 2017-03-24
+Date: 2017-03-27
 Tags: releases
 Category: releases
 Slug: release-0.2
 Author: Eric Jonas
 Summary: Annoucing PyWren 0.2, bugfix release and interactive setup script. 
-status: draft
 
 Today we're excited to release PyWren version 0.2. This release contains
 a number of important bug fixes, as well as a new getting started script. 
