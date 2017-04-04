@@ -171,7 +171,7 @@ loopcnt = 10
 
 def big_flops(std_dev):
     running_sum = 0
-    for i in loopcnt:
+    for i in range(loopcnt):
         A = np.random.normal(0, std_dev, (4096, 4096))
         B = np.random.normal(0, std_dev, (4096, 4096))
         c = np.dot(A, B)
