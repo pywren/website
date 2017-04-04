@@ -22,7 +22,7 @@ options. It is recommended to hit enter and simply accept the defaults.
 
 
 ```console
-$ pyren-setup
+$ pywren-setup
 
 This is the PyWren interactive setup script
 Your AWS configuration appears to be set up, and your account ID is 71825125821
