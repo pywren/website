@@ -5,16 +5,28 @@ Summary: Getting started with pywren
 status: hidden
 
 
-To get started, make sure you have an AWS account, and install pywren. You
-can do the installation from either pypi
+To get started, make sure you have an AWS account, and install PyWren. 
+
+### Obtaining an Amazon Web Services account
+
+First make sure you are signed up for [Amazon Web Services](https://aws.amazon.com/). We recomment then installing the AWS command-line utilities via
+```console
+pip install awscli
+```
+
+and following [their configuration instructions](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html )
+
+### Install PyWren
+You can do the installation from either PyPI (recommended):
 
 ```console
 $ pip install pywren
 ```
+
 or from the [git repository](https://github.com/pywren/pywren/). This
 installs the pywren library as well as the `pywren` command-line tool. 
 
-## Interactive setup
+### Interactive PyWren setup
 
 As of `v0.2` PyWren now has an interactive setup script, which you can
 run via `pywren-setup`, which will prompt you for various configuration
