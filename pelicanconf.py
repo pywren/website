@@ -30,7 +30,7 @@ HIDE_SIDEBAR=True
 DISPLAY_CATEGORIES_ON_MENU=False
 MENUITEMS=[('blog', "/blog.html"),
            ('getting started', "/pages/gettingstarted.html"),
-           ('documentation', "/pages/docs.html"),
+           ('documentation', "http://pywren.io/docs"),
            ("examples", "https://github.com/pywren/examples/"), 
            ("code", "http://github.com/pywren/pywren"), 
            ("bugs", "https://github.com/pywren/pywren/issues"), 
