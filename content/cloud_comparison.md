@@ -60,7 +60,7 @@ We wanted to investigate and understand the implementation details of each cloud
     <td>Regions</td>
     <td>Globally available across Americas, Asia, Europe</td>
     <td> US</td>
-    <td>North America, Asia, West Europe</td>
+    <td>Americas, Asia, Europe</td>
   </tr>
 </table>
 
