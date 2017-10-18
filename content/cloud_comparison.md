@@ -7,7 +7,14 @@ Author: Allan Peng
 Summary: We try out serverless offerings from other cloud providers to see how they compare with AWS Lambda
 
 Recently at [RISELab](https://rise.cs.berkeley.edu/), we’ve been working on [PyWren](http://pywren.io), a distributed computation framework that leverages serverless cloud functions to run python code at massive scale. Our existing infrastructure uses Amazon Web Services: [S3](https://aws.amazon.com/s3/) for storage and [Lambda](https://aws.amazon.com/lambda/) for compute. With the recent introduction of serverless cloud offerings from competing cloud providers, we asked ourselves if we could generalize PyWren to other cloud infrastructures and allow users to easily configure  PyWren to run on other cloud backends.
-
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+th, td{
+padding: 10px;
+}
+</style>
 
 ## What is Serverless?
 
@@ -30,8 +37,32 @@ The main players in this space are AWS Lambda, [Google Cloud Functions](https://
 
 We wanted to investigate and understand the implementation details of each cloud under the hood, and see how much these implementations would allow us to scale out to handle PyWren’s workloads.
 
-<a href="/images/meta.png"><img src="/images/meta.png"alt="General release info" style="max-width:100%"></a>
-
+<table style="width:100%">
+  <tr>
+    <th></th>
+    <th>AWS Lambda</th>
+    <th>Google Cloud Functions</th> 
+    <th>Azure Functions</th>
+  </tr>
+  <tr>
+    <td>Release</td>
+    <td>2014</td>
+    <td>2016 (in beta)</td> 
+    <td>2016</td>
+  </tr>
+  <tr>
+    <td>Runtimes</td>
+    <td>Python, Node.js, Java, C#</td> 
+    <td>Node.js</td>
+    <td>C#, F#, Node.js</td>
+  </tr>
+  <tr>
+    <td>Regions</td>
+    <td>Globally available across Americas, Asia, Europe</td>
+    <td> US</td>
+    <td>North America, Asia, West Europe</td>
+  </tr>
+</table>
 
 ## Implementation
 
@@ -44,8 +75,50 @@ Azure also lets you write to persistent storage, In contrast to Lambda and GCF, 
 Another notable feature of Azure is that users have direct access to the underlying file system through a [cmd console on the deployment website](https://blogs.msdn.microsoft.com/benjaminperkins/2014/03/24/using-kudu-with-windows-azure-web-sites/). Using this, we were able to make extensive modifications to the Azure Functions environment, upgrading the system Python, and installing packages such as NumPy directly on the machine image. 
 
 
-<a href="/images/stats.png"><img src="/images/stats.png" alt="General statistics"style="max-width:100%"></a>
-
+<table style="width:100%">
+  <tr>
+    <th></th>
+    <th>AWS Lambda</th>
+    <th>Google Cloud Functions</th> 
+    <th>Azure Functions</th>
+  </tr>
+  <tr>
+    <td>Max Deployment Size (Compressed)</td>
+    <td>50MB </td>
+    <td>100MB</td> 
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>Max run time</td>
+    <td>300s </td>
+    <td>540s</td> 
+    <td>600s</td>
+  </tr>
+  <tr>
+    <td>Memory</td>
+    <td>1.5GB</td>
+    <td>2GB</td> 
+    <td>1.5GB/Function Instance</td>
+  </tr>
+  <tr>
+    <td>Disk Space</td>
+    <td>512 MB</td> 
+    <td>Counted against Memroy Limit</td>
+    <td>5TB</td>
+  </tr>
+  <tr>
+    <td>OS</td>
+    <td>Amazon Linux</td>
+    <td>Debian</td>
+    <td> Windows Server 2012</td>
+  </tr>
+  <tr>
+    <td>Job Isolation</td>
+    <td>Isolated containers, sometimes reused</td>
+    <td>Isolated containers, sometimes reused</td>
+    <td>Concurrent threads run in the same function instance</td>
+  </tr>
+</table>
 
 ## Scaling & Limits
 The unit of scalability for Lambda and GCF is a single function execution. Upon each function invocation, a container is launched or assigned to run a single execution. AWS and Google limit the number of concurrent functions you can run, and will throttle any job that exceeds the limit of 1000.
@@ -55,7 +128,32 @@ When testing PyWren on Google Cloud, we were limited by GCF’s 100GB/100s limit
 In contrast to the one-container-one-execution approach, the unit of scalability for Azure Functions is coarser. Azure scales at the granularity of  a“function instance”, a sandbox that serves up to 512 threads and 32 processes in the same environment. Under the hood, Azure monitors each function’s traffic, and will only scale out to more function instances when a function is consistently receiving a significant load. This means that Azure isn’t a great fit for handling PyWren’s workload, which has low average traffic, but very sudden high bursts.The underlying infrastructure can’t anticipate a sudden burst of dropping into the job queue, and doesn’t have a chance to scale out to handle all of them. In our tests, we found when we tried invoking ~100 concurrent functions, they would all be scheduled to run on the same machine. Each of these threads would then try to fork a Python subprocess, which would overload the machine and cause most of the invocations to get throttled and error.
 
 ## Feature Table
-<a href="/images/misc_features.png"><img src="/images/misc_features.png" alt="Miscellaneous feature table"style="max-width:100%"></a>
+<table style="width:100%">
+  <tr>
+    <th></th>
+    <th>AWS Lambda</th>
+    <th>Google Cloud Functions</th> 
+    <th>Azure Functions</th>
+  </tr>
+  <tr>
+    <td>Deployment options</td>
+    <td>Web portal, Command line, boto SDK</td>
+    <td>Comamnd line</td> 
+    <td>Web portal, HTTP PUT endpoint</td>
+  </tr>
+  <tr>
+    <td>Invocation Authentication</td>
+    <td>Yes</td>
+    <td>No</td> 
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>Asynchronous Invocationy</td>
+    <td>Yes</td>
+    <td>None.  Synchronous HTTP POST</td> 
+    <td>Yes</td>
+  </tr>
+</table>
 
 ## How PyWren handles multiple backends
 As we’ve worked to benchmark and understand sever-less cloud infrastructure, we’ve also refactored the PyWren code base to be able to handle different cloud storage and compute backends without any noticeable changes for users.
