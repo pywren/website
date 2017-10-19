@@ -54,7 +54,7 @@ We wanted to investigate and understand the implementation details of each cloud
     <td>Runtimes</td>
     <td>Python, Node.js, Java, C#</td> 
     <td>Node.js</td>
-    <td>C#, F#, Node.js</td>
+    <td>C#, F#, Node.js, Python</td>
   </tr>
   <tr>
     <td>Regions</td>
