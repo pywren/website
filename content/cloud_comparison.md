@@ -148,7 +148,7 @@ In contrast to the one-container-one-execution approach, the unit of scalability
     <td>Yes</td>
   </tr>
   <tr>
-    <td>Asynchronous Invocationy</td>
+    <td>Asynchronous Invocation</td>
     <td>Yes</td>
     <td>None.  Synchronous HTTP POST</td> 
     <td>Yes</td>
@@ -162,6 +162,6 @@ As we’ve worked to benchmark and understand sever-less cloud infrastructure, w
 
 We noted that the user facing APIs, `executor` and `futures` should stay the same no matter what cloud infrastructure we were running on. The only moving parts, essentially, were storage and function invocation - both of which could be swapped out silently in the backend. To use a different compute backend, a user would only need to modify their `pywren_config` and nothing else.
 
-We've also restructured the code under the hood to less AWS-specific. We abstracted all storage operations to a [generic storage handler](https://github.com/pywren/pywren/pull/119) that calls service-specific APIs under the hood. In addition, we [refactored](https://github.com/pywren/pywren/pull/155/files) much of the lambda code to be portable to different cloud environments - using python’s platform agnostic `os` module to replace hard-coded unix file paths, and using Linux-specific syscalls only when available.
+We've also restructured the code under the hood to be less AWS-specific. We abstracted all storage operations to a [generic storage handler](https://github.com/pywren/pywren/pull/119) that calls service-specific APIs under the hood. In addition, we [refactored](https://github.com/pywren/pywren/pull/155/files) much of the lambda code to be portable to different cloud environments - using python’s platform agnostic `os` module to replace hard-coded unix file paths, and using Linux-specific syscalls only when available.
 
 The serverless landscape is new and exciting. Providers are continuously pushing new features, raising limits, adding new options for users, and we're still working to understand the capabilities and trends in this space. We welcome any comments or corrections, in case of any inaccuracies in this post. Feel free to reach out via our [github](https://github.com/pywren/pywren/issues).
